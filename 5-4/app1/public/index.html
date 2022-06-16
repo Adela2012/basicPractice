@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <button>获取用户列表</button>
+    <ul>
+
+    </ul>
+    <script>
+        let count = 0
+        let buttonEle = document.querySelector('button')
+        let ulElement = document.querySelector('ul')
+        buttonEle.onclick = getUsers()
+
+        function getUsers() {
+            count++
+            let xhr = new XMLHttpRequest()
+            xhr.open('get', '/users')
+            xhr.onload = function onload() {
+                let users = JSON.parse( this.responseText)
+                ulElement.innerHTML = ''
+                users.forEach(user => {
+                    let liEle = document.createElement('li')
+                    liEle.innerHTML = user.username
+                    ulElement.appendChild(liEle)
+                })
+                if (count < 10) {
+                    setTimeout(() => {
+                        getUsers()
+                    }, 2000)
+                }
+            }
+            xhr.send()  
+        }
+
+        
+
+        
+    </script>
+</body>
+</html>
